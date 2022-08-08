@@ -411,4 +411,72 @@ for(i in 1:length(dsfrk_BD_list_norweighted)){
 freq_rsquared_dsfrk_BD_norweighted<-data.frame(table(cut(r_squared_dsfrk_BD_norweighted$adj.r.squared,breaks=seq(0,1,by=0.1))))
 print.xtable(xtable(freq_rsquared_dsfrk_BD_norweighted), type="html", file="freq_rsquared_dsfrk_BD_nor_weighted.html", include.rownames = FALSE)
 
+############------------------------------------------
+##Graphical summary for each data subset
+##For us_frk
+graph_us_frk_jrc<-us_frk%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_jrc)
+graph_us_frk_jrc$source<-rep("JRC",times=nrow(graph_us_frk_jrc))
+graph_us_frk_colorado<-us_frk%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_colorado)
+graph_us_frk_colorado$source<-rep("Riverwatch-Colorado",times=nrow(graph_us_frk_colorado))
+graph_us_frk<-rbind(graph_us_frk_jrc,graph_us_frk_colorado)
+
+graph_us_frk<-graph_us_frk[order(graph_us_frk$date_formatted), ] 
+graph_us_frk$month_day<-format(as.Date(graph_us_frk$date_formatted, format="%Y-%m-%d"),"%m-%d")
+
+summary_graph_us_frk<-ggplot(data = graph_us_frk,aes(x=month_day,y=discharge,color=source))+
+  geom_line(aes(group = source,color=source))+
+  geom_point(size=2,alpha=0.8)+
+  scale_color_manual(values=c("Riverwatch-Colorado"="#E69F00",
+                              "JRC"="#56B4E9"))+
+  facet_wrap(~year.x)+
+  labs(x="Date (month-day)",y="Discharge (cubic metre per second)",color="Source")+
+  theme_bw()+
+  theme(legend.position="bottom",axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+ggsave("summary_graph_us_frk", plot=summary_graph_us_frk,width=40,height=40,device="tiff",unit="cm",dpi=500)    
+
+##For ds_frk_hrdg
+graph_dsfrk_hrdg_jrc<-ds_frk_hrdg%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_jrc)
+graph_dsfrk_hrdg_jrc$source<-rep("JRC",times=nrow(graph_dsfrk_hrdg_jrc))
+graph_dsfrk_hrdg_colorado<-ds_frk_hrdg%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_colorado)
+graph_dsfrk_hrdg_colorado$source<-rep("Riverwatch-Colorado",times=nrow(graph_dsfrk_hrdg_colorado))
+graph_dsfrk_hrdg<-rbind(graph_dsfrk_hrdg_jrc,graph_dsfrk_hrdg_colorado)
+
+graph_dsfrk_hrdg<-graph_dsfrk_hrdg[order(graph_dsfrk_hrdg$date_formatted), ] 
+graph_dsfrk_hrdg$month_day<-format(as.Date(graph_dsfrk_hrdg$date_formatted, format="%Y-%m-%d"),"%m-%d")
+
+summary_graph_dsfrk_hrdg<-ggplot(data = graph_dsfrk_hrdg,aes(x=month_day,y=discharge,color=source))+
+  geom_line(aes(group = source,color=source))+
+  geom_point(size=2,alpha=0.8)+
+  scale_color_manual(values=c("Riverwatch-Colorado"="#E69F00",
+                              "JRC"="#56B4E9"))+
+  facet_wrap(~year.x)+
+  labs(x="Date (month-day)",y="Discharge (cubic metre per second)",color="Source")+
+  theme_bw()+
+  theme(legend.position="bottom",axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+ggsave("summary_graph_dsfrk_hrdg", plot=summary_graph_dsfrk_hrdg,width=40,height=40,device="tiff",unit="cm",dpi=500)    
+
+##For ds_frk_BD
+graph_dsfrk_BD_jrc<-ds_frk_BD%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_jrc)
+graph_dsfrk_BD_jrc$source<-rep("JRC",times=nrow(graph_dsfrk_BD_jrc))
+graph_dsfrk_BD_colorado<-ds_frk_BD%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_colorado)
+graph_dsfrk_BD_colorado$source<-rep("Riverwatch-Colorado",times=nrow(graph_dsfrk_BD_colorado))
+graph_dsfrk_BD<-rbind(graph_dsfrk_BD_jrc,graph_dsfrk_BD_colorado)
+
+graph_dsfrk_BD<-graph_dsfrk_BD[order(graph_dsfrk_BD$date_formatted), ] 
+graph_dsfrk_BD$month_day<-format(as.Date(graph_dsfrk_BD$date_formatted, format="%Y-%m-%d"),"%m-%d")
+
+summary_graph_dsfrk_BD<-ggplot(data = graph_dsfrk_BD,aes(x=month_day,y=discharge,color=source))+
+  geom_line(aes(group = source,color=source))+
+  geom_point(size=2,alpha=0.8)+
+  scale_color_manual(values=c("Riverwatch-Colorado"="#E69F00",
+                              "JRC"="#56B4E9"))+
+  facet_wrap(~year.x)+
+  labs(x="Date (month-day)",y="Discharge (cubic metre per second)",color="Source")+
+  theme_bw()+
+  theme(legend.position="bottom",axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+ggsave("summary_graph_dsfrk_BD", plot=summary_graph_dsfrk_BD,width=40,height=40,device="tiff",unit="cm",dpi=500)    
+
 
