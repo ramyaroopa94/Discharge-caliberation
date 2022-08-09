@@ -140,9 +140,9 @@ for(i in 1:length(us_frk_list_unweighted)){
   us_frk_lm_list_unweighted[[i]]<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=us_frk_list_unweighted[[i]])
   r_squared_us_frk_unweighted[i,]<-data.frame(summary(us_frk_lm_list_unweighted[[i]])[c("r.squared","adj.r.squared")])
 }
-
+summary(r_squared_us_frk_unweighted$adj.r.squared)
 freq_rsquared_us_frk_unweighted<-data.frame(table(cut(r_squared_us_frk_unweighted$adj.r.squared,breaks=seq(0,1,by=0.1))))
-print.xtable(xtable(freq_rsquared_us_frk_unweighted), type="html", file="freq_rsquared_us_frk_unweighted.html", include.rownames = FALSE)
+print.xtable(xtable(freq_rsquared_us_frk_unweighted), type="html", file="freq_rsquared_us_frk_unweighted_09.08.22.html", include.rownames = FALSE)
 
 ##weighted subsampling and lm for us_frk
 freq_us_frk_colorado<-data.frame(table(cut(us_frk$cumecs_colorado,breaks=10)))
@@ -173,9 +173,9 @@ for(i in 1:length(us_frk_list_weighted)){
   us_frk_lm_list_weighted[[i]]<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=us_frk_list_weighted[[i]])
   r_squared_us_frk_weighted[i,]<-data.frame(summary(us_frk_lm_list_weighted[[i]])[c("r.squared","adj.r.squared")])
 }
-
+summary(r_squared_us_frk_weighted$adj.r.squared)
 freq_rsquared_us_frk_weighted<-data.frame(table(cut(r_squared_us_frk_weighted$adj.r.squared,breaks=seq(0,1,by=0.1))))
-print.xtable(xtable(freq_rsquared_us_frk_weighted), type="html", file="freq_rsquared_us_frk_weighted.html", include.rownames = FALSE)
+print.xtable(xtable(freq_rsquared_us_frk_weighted), type="html", file="freq_rsquared_us_frk_weighted_09.08.22.html", include.rownames = FALSE)
 
 ##min-max normalization to generate non-zero weights
 us_frk$normalized_weight<-(us_frk$weight-min(us_frk$weight))/(max(us_frk$weight)-min(us_frk$weight))
@@ -194,9 +194,15 @@ for(i in 1:length(us_frk_list_norweighted)){
   us_frk_lm_list_norweighted[[i]]<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=us_frk_list_norweighted[[i]])
   r_squared_us_frk_norweighted[i,]<-data.frame(summary(us_frk_lm_list_norweighted[[i]])[c("r.squared","adj.r.squared")])
 }
-
+summary(r_squared_us_frk_norweighted$adj.r.squared)
 freq_rsquared_us_frk_norweighted<-data.frame(table(cut(r_squared_us_frk_norweighted$adj.r.squared,breaks=seq(0,1,by=0.1))))
-print.xtable(xtable(freq_rsquared_us_frk_norweighted), type="html", file="freq_rsquared_us_frk_nor_weighted.html", include.rownames = FALSE)
+print.xtable(xtable(freq_rsquared_us_frk_norweighted), type="html", file="freq_rsquared_us_frk_nor_weighted_09.08.22.html", include.rownames = FALSE)
+
+##Saving the regression coefficients for best model and corresponding data subsample
+which(r_squared_us_frk_norweighted$adj.r.squared>0.55)
+us_frk_best_model<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=us_frk_list_norweighted[[9]])
+print.xtable(xtable(summary(us_frk_best_model)$coefficients), type="html", file="coefficients_best_model_us_frk.html", include.rownames = T)
+print.xtable(xtable(us_frk_list_norweighted[[9]]), type="html", file="training_df_best_model_us_frk.html", include.rownames = T)
 
 ############------------------------------------------
 ##Caliberation regression for ds_frk_hrdg
@@ -243,9 +249,9 @@ for(i in 1:length(dsfrk_hrdg_list_unweighted)){
   dsfrk_hrdg_lm_list_unweighted[[i]]<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_hrdg_list_unweighted[[i]])
   r_squared_dsfrk_hrdg_unweighted[i,]<-data.frame(summary(dsfrk_hrdg_lm_list_unweighted[[i]])[c("r.squared","adj.r.squared")])
 }
-
+summary(r_squared_dsfrk_hrdg_unweighted$adj.r.squared)
 freq_rsquared_dsfrk_hrdg_unweighted<-data.frame(table(cut(r_squared_dsfrk_hrdg_unweighted$adj.r.squared,breaks=seq(0,1,by=0.1))))
-print.xtable(xtable(freq_rsquared_dsfrk_hrdg_unweighted), type="html", file="freq_rsquared_dsfrk_hrdg_unweighted.html", include.rownames = FALSE)
+print.xtable(xtable(freq_rsquared_dsfrk_hrdg_unweighted), type="html", file="freq_rsquared_dsfrk_hrdg_unweighted_09.08.22.html", include.rownames = FALSE)
 
 ##weighted subsampling and lm for ds_frk_hrdg
 freq_dsfrk_hrdg_colorado<-data.frame(table(cut(ds_frk_hrdg$cumecs_colorado,breaks=10)))
@@ -276,9 +282,9 @@ for(i in 1:length(dsfrk_hrdg_list_weighted)){
   dsfrk_hrdg_lm_list_weighted[[i]]<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_hrdg_list_weighted[[i]])
   r_squared_dsfrk_hrdg_weighted[i,]<-data.frame(summary(dsfrk_hrdg_lm_list_weighted[[i]])[c("r.squared","adj.r.squared")])
 }
-
+summary(r_squared_dsfrk_hrdg_weighted$adj.r.squared)
 freq_rsquared_dsfrk_hrdg_weighted<-data.frame(table(cut(r_squared_dsfrk_hrdg_weighted$adj.r.squared,breaks=seq(0,1,by=0.1))))
-print.xtable(xtable(freq_rsquared_dsfrk_hrdg_weighted), type="html", file="freq_rsquared_dsfrk_hrdg_weighted.html", include.rownames = FALSE)
+print.xtable(xtable(freq_rsquared_dsfrk_hrdg_weighted), type="html", file="freq_rsquared_dsfrk_hrdg_weighted_09.08.22.html", include.rownames = FALSE)
 
 ##min-max normalization to generate non-zero weights
 ds_frk_hrdg$normalized_weight<-(ds_frk_hrdg$weight-min(ds_frk_hrdg$weight))/(max(ds_frk_hrdg$weight)-min(ds_frk_hrdg$weight))
@@ -297,9 +303,15 @@ for(i in 1:length(dsfrk_hrdg_list_norweighted)){
   dsfrk_hrdg_lm_list_norweighted[[i]]<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_hrdg_list_norweighted[[i]])
   r_squared_dsfrk_hrdg_norweighted[i,]<-data.frame(summary(dsfrk_hrdg_lm_list_norweighted[[i]])[c("r.squared","adj.r.squared")])
 }
-
+summary(r_squared_dsfrk_hrdg_norweighted$adj.r.squared)
 freq_rsquared_dsfrk_hrdg_norweighted<-data.frame(table(cut(r_squared_dsfrk_hrdg_norweighted$adj.r.squared,breaks=seq(0,1,by=0.1))))
-print.xtable(xtable(freq_rsquared_dsfrk_hrdg_norweighted), type="html", file="freq_rsquared_dsfrk_hrdg_nor_weighted.html", include.rownames = FALSE)
+print.xtable(xtable(freq_rsquared_dsfrk_hrdg_norweighted), type="html", file="freq_rsquared_dsfrk_hrdg_nor_weighted_09.08.22.html", include.rownames = FALSE)
+
+##Saving the regression coefficients for best model and corresponding data subsample
+which(r_squared_dsfrk_hrdg_weighted$adj.r.squared>0.45)
+dsfrk_hrdg_best_model<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_hrdg_list_weighted[[126]])
+print.xtable(xtable(summary(dsfrk_hrdg_best_model)$coefficients), type="html", file="coefficients_best_model_dsfrk_hrdg.html", include.rownames = T)
+print.xtable(xtable(dsfrk_hrdg_list_weighted[[126]]), type="html", file="training_df_best_model_dsfrk_hrdg.html", include.rownames = T)
 
 ############------------------------------------------
 ##Caliberation regression for ds_frk_BD
@@ -353,9 +365,9 @@ for(i in 1:length(dsfrk_BD_list_unweighted)){
   dsfrk_BD_lm_list_unweighted[[i]]<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_BD_list_unweighted[[i]])
   r_squared_dsfrk_BD_unweighted[i,]<-data.frame(summary(dsfrk_BD_lm_list_unweighted[[i]])[c("r.squared","adj.r.squared")])
 }
-
+summary(r_squared_dsfrk_BD_unweighted$adj.r.squared)
 freq_rsquared_dsfrk_BD_unweighted<-data.frame(table(cut(r_squared_dsfrk_BD_unweighted$adj.r.squared,breaks=seq(0,1,by=0.1))))
-print.xtable(xtable(freq_rsquared_dsfrk_BD_unweighted), type="html", file="freq_rsquared_dsfrk_BD_unweighted.html", include.rownames = FALSE)
+print.xtable(xtable(freq_rsquared_dsfrk_BD_unweighted), type="html", file="freq_rsquared_dsfrk_BD_unweighted_09.08.22.html", include.rownames = FALSE)
 
 ##weighted subsampling and lm for ds_frk_hrdg
 freq_dsfrk_BD_colorado<-data.frame(table(cut(ds_frk_BD$cumecs_colorado,breaks=10)))
@@ -386,9 +398,9 @@ for(i in 1:length(dsfrk_BD_list_weighted)){
   dsfrk_BD_lm_list_weighted[[i]]<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_BD_list_weighted[[i]])
   r_squared_dsfrk_BD_weighted[i,]<-data.frame(summary(dsfrk_BD_lm_list_weighted[[i]])[c("r.squared","adj.r.squared")])
 }
-
+summary(r_squared_dsfrk_BD_weighted$adj.r.squared)
 freq_rsquared_dsfrk_BD_weighted<-data.frame(table(cut(r_squared_dsfrk_BD_weighted$adj.r.squared,breaks=seq(0,1,by=0.1))))
-print.xtable(xtable(freq_rsquared_dsfrk_BD_weighted), type="html", file="freq_rsquared_dsfrk_BD_weighted.html", include.rownames = FALSE)
+print.xtable(xtable(freq_rsquared_dsfrk_BD_weighted), type="html", file="freq_rsquared_dsfrk_BD_weighted_09.08.22.html", include.rownames = FALSE)
 
 ##min-max normalization to generate non-zero weights
 ds_frk_BD$normalized_weight<-(ds_frk_BD$weight-min(ds_frk_BD$weight))/(max(ds_frk_BD$weight)-min(ds_frk_BD$weight))
@@ -407,9 +419,15 @@ for(i in 1:length(dsfrk_BD_list_norweighted)){
   dsfrk_BD_lm_list_norweighted[[i]]<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_BD_list_norweighted[[i]])
   r_squared_dsfrk_BD_norweighted[i,]<-data.frame(summary(dsfrk_BD_lm_list_norweighted[[i]])[c("r.squared","adj.r.squared")])
 }
-
+summary(r_squared_dsfrk_BD_norweighted$adj.r.squared)
 freq_rsquared_dsfrk_BD_norweighted<-data.frame(table(cut(r_squared_dsfrk_BD_norweighted$adj.r.squared,breaks=seq(0,1,by=0.1))))
-print.xtable(xtable(freq_rsquared_dsfrk_BD_norweighted), type="html", file="freq_rsquared_dsfrk_BD_nor_weighted.html", include.rownames = FALSE)
+print.xtable(xtable(freq_rsquared_dsfrk_BD_norweighted), type="html", file="freq_rsquared_dsfrk_BD_nor_weighted_09.08.22.html", include.rownames = FALSE)
+
+##Saving the regression coefficients for best model and corresponding data subsample
+which(r_squared_dsfrk_BD_weighted$adj.r.squared>0.47)
+dsfrk_BD_best_model<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_BD_list_weighted[[529]])
+print.xtable(xtable(summary(dsfrk_BD_best_model)$coefficients), type="html", file="coefficients_best_model_dsfrk_BD.html", include.rownames = T)
+print.xtable(xtable(dsfrk_BD_list_weighted[[529]]), type="html", file="training_df_best_model_dsfrk_BD.html", include.rownames = T)
 
 ############------------------------------------------
 ##Graphical summary for each data subset
@@ -419,9 +437,16 @@ graph_us_frk_jrc$source<-rep("JRC",times=nrow(graph_us_frk_jrc))
 graph_us_frk_colorado<-us_frk%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_colorado)
 graph_us_frk_colorado$source<-rep("Riverwatch-Colorado",times=nrow(graph_us_frk_colorado))
 graph_us_frk<-rbind(graph_us_frk_jrc,graph_us_frk_colorado)
-
 graph_us_frk<-graph_us_frk[order(graph_us_frk$date_formatted), ] 
 graph_us_frk$month_day<-format(as.Date(graph_us_frk$date_formatted, format="%Y-%m-%d"),"%m-%d")
+
+my_theme = theme(
+  axis.title.x = element_text(size = 14),
+  axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
+  axis.title.y = element_text(size = 14),
+  legend.title=element_text(size=14), 
+  legend.text=element_text(size=14),
+  legend.position="bottom")
 
 summary_graph_us_frk<-ggplot(data = graph_us_frk,aes(x=month_day,y=discharge,color=source))+
   geom_line(aes(group = source,color=source))+
@@ -429,11 +454,20 @@ summary_graph_us_frk<-ggplot(data = graph_us_frk,aes(x=month_day,y=discharge,col
   scale_color_manual(values=c("Riverwatch-Colorado"="#E69F00",
                               "JRC"="#56B4E9"))+
   facet_wrap(~year.x)+
-  labs(x="Date (month-day)",y="Discharge (cubic metre per second)",color="Source")+
-  theme_bw()+
-  theme(legend.position="bottom",axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  labs(x="Date (month-day)",y="River discharge (m³/s)",color="Source")+
+  theme_bw()+my_theme
 
-ggsave("summary_graph_us_frk", plot=summary_graph_us_frk,width=40,height=40,device="tiff",unit="cm",dpi=500)    
+ggsave("summary_graph_us_frk.tiff", plot=summary_graph_us_frk,width=40,height=40,unit="cm",compression="lzw",dpi=500)    
+
+summary_graph_us_frk_jrc<-graph_us_frk%>%filter(source=="JRC")%>%
+  ggplot(aes(x=month_day,y=discharge))+
+  geom_line(aes(group = source),color="#56B4E9")+
+  geom_point(size=2,alpha=0.8,color="#56B4E9")+
+  facet_wrap(~year.x)+
+  labs(x="Date (month-day)",y="River discharge (m³/s)")+
+  theme_bw()+my_theme
+  
+ggsave("summary_graph_us_frk_jrc.tiff", plot=summary_graph_us_frk_jrc,width=40,height=40,unit="cm",compression="lzw",dpi=500)    
 
 ##For ds_frk_hrdg
 graph_dsfrk_hrdg_jrc<-ds_frk_hrdg%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_jrc)
@@ -441,7 +475,6 @@ graph_dsfrk_hrdg_jrc$source<-rep("JRC",times=nrow(graph_dsfrk_hrdg_jrc))
 graph_dsfrk_hrdg_colorado<-ds_frk_hrdg%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_colorado)
 graph_dsfrk_hrdg_colorado$source<-rep("Riverwatch-Colorado",times=nrow(graph_dsfrk_hrdg_colorado))
 graph_dsfrk_hrdg<-rbind(graph_dsfrk_hrdg_jrc,graph_dsfrk_hrdg_colorado)
-
 graph_dsfrk_hrdg<-graph_dsfrk_hrdg[order(graph_dsfrk_hrdg$date_formatted), ] 
 graph_dsfrk_hrdg$month_day<-format(as.Date(graph_dsfrk_hrdg$date_formatted, format="%Y-%m-%d"),"%m-%d")
 
@@ -451,11 +484,20 @@ summary_graph_dsfrk_hrdg<-ggplot(data = graph_dsfrk_hrdg,aes(x=month_day,y=disch
   scale_color_manual(values=c("Riverwatch-Colorado"="#E69F00",
                               "JRC"="#56B4E9"))+
   facet_wrap(~year.x)+
-  labs(x="Date (month-day)",y="Discharge (cubic metre per second)",color="Source")+
-  theme_bw()+
-  theme(legend.position="bottom",axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  labs(x="Date (month-day)",y="River discharge (m³/s)",color="Source")+
+  theme_bw()+my_theme
 
-ggsave("summary_graph_dsfrk_hrdg", plot=summary_graph_dsfrk_hrdg,width=40,height=40,device="tiff",unit="cm",dpi=500)    
+ggsave("summary_graph_dsfrk_hrdg.tiff", plot=summary_graph_dsfrk_hrdg,width=40,height=40,unit="cm",compression="lzw",dpi=500)    
+
+summary_graph_dsfrk_hrdg_jrc<-graph_dsfrk_hrdg%>%filter(source=="JRC")%>%
+  ggplot(aes(x=month_day,y=discharge))+
+  geom_line(aes(group = source),color="#56B4E9")+
+  geom_point(size=2,alpha=0.8,color="#56B4E9")+
+  facet_wrap(~year.x)+
+  labs(x="Date (month-day)",y="River discharge (m³/s)")+
+  theme_bw()+my_theme
+
+ggsave("summary_graph_dsfrk_hrdg_jrc.tiff", plot=summary_graph_dsfrk_hrdg_jrc,width=40,height=40,unit="cm",compression="lzw",dpi=500)    
 
 ##For ds_frk_BD
 graph_dsfrk_BD_jrc<-ds_frk_BD%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_jrc)
@@ -463,7 +505,6 @@ graph_dsfrk_BD_jrc$source<-rep("JRC",times=nrow(graph_dsfrk_BD_jrc))
 graph_dsfrk_BD_colorado<-ds_frk_BD%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_colorado)
 graph_dsfrk_BD_colorado$source<-rep("Riverwatch-Colorado",times=nrow(graph_dsfrk_BD_colorado))
 graph_dsfrk_BD<-rbind(graph_dsfrk_BD_jrc,graph_dsfrk_BD_colorado)
-
 graph_dsfrk_BD<-graph_dsfrk_BD[order(graph_dsfrk_BD$date_formatted), ] 
 graph_dsfrk_BD$month_day<-format(as.Date(graph_dsfrk_BD$date_formatted, format="%Y-%m-%d"),"%m-%d")
 
@@ -473,10 +514,18 @@ summary_graph_dsfrk_BD<-ggplot(data = graph_dsfrk_BD,aes(x=month_day,y=discharge
   scale_color_manual(values=c("Riverwatch-Colorado"="#E69F00",
                               "JRC"="#56B4E9"))+
   facet_wrap(~year.x)+
-  labs(x="Date (month-day)",y="Discharge (cubic metre per second)",color="Source")+
-  theme_bw()+
-  theme(legend.position="bottom",axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  labs(x="Date (month-day)",y="River discharge (m³/s)",color="Source")+
+  theme_bw()+my_theme
 
-ggsave("summary_graph_dsfrk_BD", plot=summary_graph_dsfrk_BD,width=40,height=40,device="tiff",unit="cm",dpi=500)    
+ggsave("summary_graph_dsfrk_BD.tiff", plot=summary_graph_dsfrk_BD,width=40,height=40,unit="cm",compression="lzw",dpi=500)    
 
+summary_graph_dsfrk_BD_jrc<-graph_dsfrk_BD%>%filter(source=="JRC")%>%
+  ggplot(aes(x=month_day,y=discharge))+
+  geom_line(aes(group=source),color="#56B4E9")+
+  geom_point(size=2,alpha=0.8,color="#56B4E9")+
+  facet_wrap(~year.x)+
+  labs(x="Date (month-day)",y="River discharge (m³/s)")+
+  theme_bw()+my_theme
+
+ggsave("summary_graph_dsfrk_BD_jrc.tiff", plot=summary_graph_dsfrk_BD_jrc,width=40,height=40,unit="cm",compression="lzw",dpi=500)    
 
