@@ -442,6 +442,56 @@ print.xtable(xtable(summary(dsfrk_BD_best_model)$coefficients), type="html", fil
 print.xtable(xtable(dsfrk_BD_list_weighted[[529]]), type="html", file="training_df_best_model_dsfrk_BD.html", include.rownames = T)
 
 ############------------------------------------------
+##specific lm models for the 3 data subsets
+##us_frk
+us_frk_Feb_May<-us_frk%>%filter(year.x=="2014"|year.x=="2015"|year.x=="2016"|
+                                year.x=="2017"|year.x=="2018"|year.x=="2019"|
+                                year.x=="2020"|year.x=="2021"|year.x=="2022")%>%filter(month.x!="January")
+lm_usfrk_Feb_May<-lm(formula = cumecs_jrc~cumecs_colorado,data=us_frk_Feb_May)                                
+summary(lm_usfrk_Feb_May)
+lm_usfrk_Feb_May2<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=us_frk_Feb_May)                                
+summary(lm_usfrk_Feb_May2)
+us_frk_Mar_May<-us_frk%>%filter(year.x=="2014"|year.x=="2015"|year.x=="2016"|
+                                  year.x=="2017"|year.x=="2018"|year.x=="2019"|
+                                  year.x=="2020"|year.x=="2021"|year.x=="2022")%>%filter(month.x!="January"&month.x!="February")
+lm_usfrk_Mar_May<-lm(formula = cumecs_jrc~cumecs_colorado,data=us_frk_Mar_May)
+summary(lm_usfrk_Mar_May)
+lm_usfrk_Mar_May2<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=us_frk_Mar_May)
+summary(lm_usfrk_Mar_May2)
+
+##ds_frk_hrdg
+dsfrk_hrdg_Feb_May<-ds_frk_hrdg%>%filter(year.x=="2014"|year.x=="2015"|year.x=="2016"|
+                                  year.x=="2017"|year.x=="2018"|year.x=="2019"|
+                                  year.x=="2020"|year.x=="2021"|year.x=="2022")%>%filter(month.x!="January")
+lm_dsfrk_hrdg_Feb_May<-lm(formula = cumecs_jrc~cumecs_colorado,data=dsfrk_hrdg_Feb_May)                                
+summary(lm_dsfrk_hrdg_Feb_May)
+lm_dsfrk_hrdg_Feb_May2<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_hrdg_Feb_May)                                
+summary(lm_dsfrk_hrdg_Feb_May2)
+dsfrk_hrdg_Mar_May<-ds_frk_hrdg%>%filter(year.x=="2014"|year.x=="2015"|year.x=="2016"|
+                                  year.x=="2017"|year.x=="2018"|year.x=="2019"|
+                                  year.x=="2020"|year.x=="2021"|year.x=="2022")%>%filter(month.x!="January"&month.x!="February")
+lm_dsfrk_hrdg_Mar_May<-lm(formula = cumecs_jrc~cumecs_colorado,data=dsfrk_hrdg_Mar_May)
+summary(lm_dsfrk_hrdg_Mar_May)
+lm_dsfrk_hrdg_Mar_May2<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_hrdg_Mar_May)
+summary(lm_dsfrk_hrdg_Mar_May2)
+
+##ds_frk_BD
+dsfrk_BD_Feb_May<-ds_frk_BD%>%filter(year.x=="2014"|year.x=="2015"|year.x=="2016"|
+                                           year.x=="2017"|year.x=="2018"|year.x=="2019"|
+                                           year.x=="2020"|year.x=="2021"|year.x=="2022")%>%filter(month.x!="January")
+lm_dsfrk_BD_Feb_May<-lm(formula = cumecs_jrc~cumecs_colorado,data=dsfrk_BD_Feb_May)                                
+summary(lm_dsfrk_BD_Feb_May)
+lm_dsfrk_BD_Feb_May2<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_BD_Feb_May)                                
+summary(lm_dsfrk_BD_Feb_May2)
+dsfrk_BD_Mar_May<-ds_frk_BD%>%filter(year.x=="2014"|year.x=="2015"|year.x=="2016"|
+                                           year.x=="2017"|year.x=="2018"|year.x=="2019"|
+                                           year.x=="2020"|year.x=="2021"|year.x=="2022")%>%filter(month.x!="January"&month.x!="February")
+lm_dsfrk_BD_Mar_May<-lm(formula = cumecs_jrc~cumecs_colorado,data=dsfrk_BD_Mar_May)
+summary(lm_dsfrk_BD_Mar_May)
+lm_dsfrk_BD_Mar_May2<-lm(formula = cumecs_jrc~cumecs_colorado+month.x,data=dsfrk_BD_Mar_May)
+summary(lm_dsfrk_BD_Mar_May2)
+
+############------------------------------------------
 ##Graphical summary for each data subset
 ##For us_frk
 graph_us_frk_jrc<-us_frk%>%dplyr::select(date_formatted,month.x,year.x,discharge=cumecs_jrc)
