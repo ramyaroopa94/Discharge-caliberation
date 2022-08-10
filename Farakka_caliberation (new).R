@@ -84,9 +84,13 @@ ds_frk_BD<-merged_df%>%filter(location=="flow_ds_frk" & variable=="release_BD")
 ############------------------------------------------
 ##Caliberation regression for us_frk
 plot(us_frk$cumecs_jrc~us_frk$cumecs_colorado)
-monthwise_us_frk<-ggplot(data=us_frk,aes(x=cumecs_colorado,y=cumecs_jrc))+
+us_frk$month.x<-factor(us_frk$month.x,levels=c("January","February","March","April","May"))
+monthwise_us_frk<-us_frk%>%
+  ggplot(aes(x=cumecs_colorado,y=cumecs_jrc))+
   geom_point()+
+  theme_bw()+
   facet_wrap(~month.x)
+ggsave("Monthwise_us_frk_10.08.22.tiff", plot=monthwise_us_frk,width=35,height=25,unit="cm",compression="lzw",dpi=500)    
 
 ##some visible outliers from scatterplot
 us_frk%>%filter(month.x=="January")%>%filter(cumecs_jrc>4500)
@@ -207,9 +211,13 @@ print.xtable(xtable(us_frk_list_norweighted[[9]]), type="html", file="training_d
 ############------------------------------------------
 ##Caliberation regression for ds_frk_hrdg
 plot(ds_frk_hrdg$cumecs_jrc~ds_frk_hrdg$cumecs_colorado)
-monthwise_dsfrk_hrdg<-ggplot(data=ds_frk_hrdg,aes(x=cumecs_colorado,y=cumecs_jrc))+
+ds_frk_hrdg$month.x<-factor(ds_frk_hrdg$month.x,levels=c("January","February","March","April","May"))
+monthwise_ds_frk_hrdg<-ds_frk_hrdg%>%
+  ggplot(aes(x=cumecs_colorado,y=cumecs_jrc))+
   geom_point()+
+  theme_bw()+
   facet_wrap(~month.x)
+ggsave("Monthwise_dsfrk_hrdg_10.08.22.tiff", plot=monthwise_ds_frk_hrdg,width=35,height=25,unit="cm",compression="lzw",dpi=500)    
 
 ##Models for ds_frk_hrdg
 lm_dsfrk_hrdg1<-lm(formula = cumecs_jrc~cumecs_colorado,data=ds_frk_hrdg)
@@ -316,9 +324,13 @@ print.xtable(xtable(dsfrk_hrdg_list_weighted[[126]]), type="html", file="trainin
 ############------------------------------------------
 ##Caliberation regression for ds_frk_BD
 plot(ds_frk_BD$cumecs_jrc~ds_frk_BD$cumecs_colorado)
-monthwise_dsfrk_BD<-ggplot(data=ds_frk_BD,aes(x=cumecs_colorado,y=cumecs_jrc))+
+ds_frk_BD$month.x<-factor(ds_frk_BD$month.x,levels=c("January","February","March","April","May"))
+monthwise_ds_frk_BD<-ds_frk_BD%>%
+  ggplot(aes(x=cumecs_colorado,y=cumecs_jrc))+
   geom_point()+
+  theme_bw()+
   facet_wrap(~month.x)
+ggsave("Monthwise_dsfrk_BD_10.08.22.tiff", plot=monthwise_ds_frk_BD,width=35,height=25,unit="cm",compression="lzw",dpi=500)    
 
 ##Models for ds_frk_hrdg
 lm_dsfrk_BD1<-lm(formula = cumecs_jrc~cumecs_colorado,data=ds_frk_BD)
